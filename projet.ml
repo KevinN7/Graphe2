@@ -59,7 +59,8 @@ let tri_topologique g =
          let rec iter y z = 
            match y with
            |t::q -> 
-                 let newz = t::z and newy = fold_succ (fun v l -> if(inclu (liste_pred v g) newz) then l@[v] else l) g t q
+                 let newz = t::z in
+                   let newy = fold_succ (fun v l -> if(inclu (liste_pred v g) newz) then l@[v] else l) g t q
                        in t::(iter newy newz)
            |[] -> z
          in iter y [];;
@@ -69,7 +70,7 @@ let tri_topologique g =
 *)
 (*type Trace = (Vertex list) list ;;*)		 
 		 			
-let ordonnanceur_ressources_illimitees g =
+(*let ordonnanceur_ressources_illimitees g =
   let y = sans_dependance g in
 		let rec iter1 y z res1 =
 			match y with
@@ -83,15 +84,16 @@ let ordonnanceur_ressources_illimitees g =
 					|[] -> res::iter1
 				in (iter2 y [] z [])::res1
 			|[] -> res1
-		in iter1 y [] [];;
+		in iter1 y [] [];;*)
 		
 
-let etage y z =
+let etage y z g =
 	let rec iter ycourant yfutur z res = 
 		match ycourant with
 		|t::q -> 
-			let newy  = fold_succ (fun v l -> if(inclu (liste_pred v g) newz) then l@[v] else l) g t yfutur
-				in iter q newy t::z res@[t]
+                    let newz=t::z in 
+                        let newy  = fold_succ (fun v l -> if(inclu (liste_pred v g) newz) then l@[v] else l) g t yfutur
+		        in iter q newy newz (res@[t])
 		|[] -> (res,yfutur,z)
 	in iter y [] z [];;
 		
@@ -100,11 +102,24 @@ let ordonnanceur_ressources_illimitees g =
   let rec iter y z res =
 	match y with
 	|[]-> res
-	|_ -> let (resetage,yfutur,newz) = etage y z in iter yfutur newz res@[resetage]
+	|_ -> let (resetage,yfutur,newz) = etage y z g in iter yfutur newz res@[resetage]
   in iter (sans_dependance g) [] [];;
 		
 		 
-		 
+(*******************************************************************)	
+
+  let etage_res y z nbres g=
+	let rec iter ycourant yfutur z resultat nbres = 
+		match ycourant with
+		|t::q -> 
+			if(nbres-1>=0) then
+				let newz=t::z in
+                                        let newy  = fold_succ (fun v l -> if(inclu (liste_pred v g) newz) then l@[v] else l) g t yfutur
+				in iter q newy newz (resultat@[t]) (nbres-1)
+			else (resultat,yfutur,z)(*iter q yfutur@[t] z resultat nbres*)
+		|[] -> (resultat,yfutur,z)
+	in iter y [] z [] nbres;;
+
 (* entrees: 
    - un nombre entier de ressources
    - un DAG
@@ -119,19 +134,9 @@ let ordonnanceur_ressources_limitees_sans_heuristique nbres g =
   let rec iter y z res =
 	match y with
 	|[]-> res
-	|_ -> let (resetage,yfutur,newz) = etage_res y z nbres in iter yfutur newz res@[resetage]
+	|_ -> let (resetage,yfutur,newz) = etage_res y z nbres g in iter yfutur newz res@[resetage]
   in iter (sans_dependance g) [] [];;(*[[]]*)
 
-  let etage_res y z nbres=
-	let rec iter ycourant yfutur z resultat nbres = 
-		match ycourant with
-		|t::q -> 
-			if(nbres-1>=0) then
-				let newz=t::z and newy  = fold_succ (fun v l -> if(inclu (liste_pred v g) newz) then l@[v] else l) g t yfutur
-				in iter q newy newz resultat@[t] (nbres-1)
-			else (resultat,yfutur,z)(*iter q yfutur@[t] z resultat nbres*)
-		|[] -> (resultat,yfutur,z)
-	in iter y [] z [] nbres;;
   
 (*let etage_res y z nbres=
 	let rec iter ycourant yfutur z resultat nbres = 
@@ -156,6 +161,8 @@ let ordonnanceur_ressources_limitees_sans_heuristique nbres g =
    - vous utiliserez une heuristique pour ameliorer la duree de la trace 
    *)
    (*	List.sort (fun a b -> if(a > b)then 1 else(if(a = b)then 0 else -1))*)
+
+(*
 let ordonnanceur_ressources_limitees_avec_heuristique nbres g = 
   let rec iter y z res =
 	match y with
@@ -164,7 +171,7 @@ let ordonnanceur_ressources_limitees_avec_heuristique nbres g =
 	let yfutur_sort =List.sort (fun a b -> if(Vertex.mass a > Vertex.mass b)then -1 else(if(Vertex.mass a = Vertex.mass b)then 0 else 1)) in
 		iter yfutur_sort newz res@[resetage]
   in iter (sans_dependance g) [] [];;
-
+*)
 
 
 (* entrees: 
@@ -176,6 +183,7 @@ let ordonnanceur_ressources_limitees_avec_heuristique nbres g =
    - le DAG est suppose pondere (section 2.3)
    - les ressources sont supposees limitees 
    *)
-val ordonnanceur_graphe_pondere : int -> DAG -> Trace
+
+(*val ordonnanceur_graphe_pondere : int -> DAG -> Trace*)
 
 
