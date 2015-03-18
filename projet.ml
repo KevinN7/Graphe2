@@ -102,7 +102,7 @@ let ordonnanceur_ressources_illimitees g =
   let rec iter y z res =
 	match y with
 	|[]-> res
-	|_ -> let (resetage,yfutur,newz) = etage y z g in iter yfutur newz res@[resetage]
+	|_ -> let (resetage,yfutur,newz) = etage y z g in iter yfutur newz (res@[resetage])
   in iter (sans_dependance g) [] [];;
 		
 		 
@@ -149,11 +149,12 @@ let ordonnanceur_ressources_limitees_sans_heuristique nbres g =
 		|[] -> (resultat,yfutur,z)
 	in iter y [] z [] nbres;;*)
 
+(*
 let max a b = if(a>=b) then a else b;;
 
 	let prof_max v g =
 		let rec iter v g courant =
-		let lsucc = in
+		let lsucc =  in
 			match lsucc with
 			|[]->courant
 			|_->List.fold_right (fun t l -> max l (iter t g (courant+1)) ) lsucc 0
@@ -164,7 +165,7 @@ let prof_max2 v g=
 
 	List.sort (fun a b -> let pa=prof_max a and pb=prof_max b in if pa>pb then 1 else if pa<pb then -1 else 0) liste
 	
-	Appliquer un tri pour ces vertex avant la selection 
+	Appliquer un tri pour ces vertex avant la selection *)
 	
 	
 (* entrees: 
