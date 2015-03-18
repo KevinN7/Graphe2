@@ -51,6 +51,9 @@ end
 
 open DAG
 
+let print_vertex fmt v = let (name, mass) = V.label v in Format.fprintf fmt "%s(%i) " name mass;;
+#install_printer print_vertex;;
+
 let dag1 = create();;
 
 let vb1 = V.create("b",1);;

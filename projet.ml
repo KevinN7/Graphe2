@@ -62,7 +62,7 @@ let tri_topologique g =
                  let newz = t::z in
                    let newy = fold_succ (fun v l -> if(inclu (liste_pred v g) newz) then l@[v] else l) g t q
                        in t::(iter newy newz)
-           |[] -> z
+           |[] -> []
          in iter y [];;
 
 (* trace d'execution 
