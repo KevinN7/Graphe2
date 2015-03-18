@@ -119,6 +119,17 @@ let ordonnanceur_ressources_illimitees g =
 			else (resultat,yfutur@ycourant,z)
 		|[] -> (resultat,yfutur,z)
 	in iter y [] z [] nbres;;
+	
+	(*let etage_res y z nbres=
+	let rec iter ycourant yfutur z resultat nbres = 
+		match ycourant with
+		|t::q -> 
+			if(nbres- Vertex.mass t  >=0) then
+				let newz=t::z and newy  = fold_succ (fun v l -> if(inclu (liste_pred v g) newz) then l@[v] else l) g t yfutur
+				in iter q newy newz resultat@[t] (nbres-  Vertex.mass t)
+			else iter q yfutur@[t] z resultat nbres
+		|[] -> (resultat,yfutur,z)
+	in iter y [] z [] nbres;;*)
 
 (* entrees: 
    - un nombre entier de ressources
@@ -135,32 +146,21 @@ let ordonnanceur_ressources_limitees_sans_heuristique nbres g =
 	match y with
 	|[]-> res
 	|_ -> let (resetage,yfutur,newz) = etage_res y z nbres g in iter yfutur newz res@[resetage]
-  in iter (sans_dependance g) [] [];;(*[[]]*)
+  in iter (sans_dependance g) [] [];;
 
   
-(*let etage_res y z nbres=
-	let rec iter ycourant yfutur z resultat nbres = 
-		match ycourant with
-		|t::q -> 
-			if(nbres- Vertex.mass t  >=0) then
-				let newz=t::z and newy  = fold_succ (fun v l -> if(inclu (liste_pred v g) newz) then l@[v] else l) g t yfutur
-				in iter q newy newz resultat@[t] (nbres-  Vertex.mass t)
-			else iter q yfutur@[t] z resultat nbres
-		|[] -> (resultat,yfutur,z)
-	in iter y [] z [] nbres;;*)
 
-(*
 let max a b = if(a>=b) then a else b;;
 
-	let prof_max v g =
-		let rec iter v g courant =
-		let lsucc =  in
-			match lsucc with
-			|[]->courant
-			|_->List.fold_right (fun t l -> max l (iter t g (courant+1)) ) lsucc 0
-		in iter v g 0;;
+let prof_max v g =
+	let rec iter v g courant =
+	let lsucc = succ g v in
+		match lsucc with
+		|[]->courant
+		|_->List.fold_right (fun t l -> max l (iter t g (courant+1)) ) lsucc 0
+	in iter v g 0;;
 
-let prof_max2 v g=		
+(*let prof_max2 v g=		
 	let rec iter v g courant = fold_succ (fun v a-> max a (iter v g (courant+1))) g v 0 in iter v g 0;;
 
 	List.sort (fun a b -> let pa=prof_max a and pb=prof_max b in if pa>pb then 1 else if pa<pb then -1 else 0) liste
@@ -180,6 +180,15 @@ let prof_max2 v g=
    *)
    (*	List.sort (fun a b -> if(a > b)then 1 else(if(a = b)then 0 else -1))*)
 
+let ordonnanceur_ressources_limitees_avec_heuristique nbres g =
+  let rec iter y z res =
+	match y with
+	|[]-> res
+	|_ -> let yordre = List.sort (fun a b -> let pa=prof_max a and pb=prof_max b in if pa>pb then 1 else if pa<pb then -1 else 0) y in 
+			let (resetage,yfutur,newz) = etage_res yordre z nbres g in iter yfutur newz res@[resetage]
+  in iter (sans_dependance g) [] [];;
+   
+   
 (*
 let ordonnanceur_ressources_limitees_avec_heuristique nbres g = 
   let rec iter y z res =
@@ -188,8 +197,8 @@ let ordonnanceur_ressources_limitees_avec_heuristique nbres g =
 	|_ -> let (resetage,yfutur,newz) = etage_res y z nbres in 
 	let yfutur_sort =List.sort (fun a b -> if(Vertex.mass a > Vertex.mass b)then -1 else(if(Vertex.mass a = Vertex.mass b)then 0 else 1)) in
 		iter yfutur_sort newz res@[resetage]
-  in iter (sans_dependance g) [] [];;
-*)
+  in iter (sans_dependance g) [] [];;*)
+
 
 
 (* entrees: 
