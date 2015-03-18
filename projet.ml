@@ -149,7 +149,24 @@ let ordonnanceur_ressources_limitees_sans_heuristique nbres g =
 		|[] -> (resultat,yfutur,z)
 	in iter y [] z [] nbres;;*)
 
+let max a b = if(a>=b) then a else b;;
 
+	let prof_max v g =
+		let rec iter v g courant =
+		let lsucc = in
+			match lsucc with
+			|[]->courant
+			|_->List.fold_right (fun t l -> max l (iter t g (courant+1)) ) lsucc 0
+		in iter v g 0;;
+
+let prof_max2 v g=		
+	let rec iter v g courant = fold_succ (fun v a-> max a (iter v g (courant+1))) g v 0 in iter v g 0;;
+
+	List.sort (fun a b -> let pa=prof_max a and pb=prof_max b in if pa>pb then 1 else if pa<pb then -1 else 0) liste
+	
+	Appliquer un tri pour ces vertex avant la selection 
+	
+	
 (* entrees: 
    - un nombre entier de ressources
    - un DAG
