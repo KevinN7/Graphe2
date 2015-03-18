@@ -116,7 +116,7 @@ let ordonnanceur_ressources_illimitees g =
 				let newz=t::z in
                                         let newy  = fold_succ (fun v l -> if(inclu (liste_pred v g) newz) then l@[v] else l) g t yfutur
 				in iter q newy newz (resultat@[t]) (nbres-1)
-			else (resultat,yfutur,z)(*iter q yfutur@[t] z resultat nbres*)
+			else (resultat,yfutur@ycourant,z)
 		|[] -> (resultat,yfutur,z)
 	in iter y [] z [] nbres;;
 
