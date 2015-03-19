@@ -200,32 +200,42 @@ let ordonnanceur_ressources_limitees_avec_heuristique nbres g =
 		iter yfutur_sort newz res@[resetage]
   in iter (sans_dependance g) [] [];;*)
 
+  (*creer un noeud de nom spécifié et l'ajoute au graphe*)
 let aux nom g =
 	let a=V.create(nom,1) in add_vertex g a;a;;
 	
-let prim g n =
-let prem = aux ^"" g in
+(*ajoute une chaine de noeud relier entre eux de n noeuds et renvoit le premier et le dernier*)
+let prim g n nom =
+	let prem = aux ^string_of_int n g in
 	let rec iter n v
 	match n with
 	|0-> (prem,v)
-	|_-> let tmp = aux (^(string_of_int n)) g in add_edge g v tmp; iter (n-1) tmp;;
-	in iter n prem;;
+	|_-> let tmp = aux (nom^(string_of_int n)) g in add_edge g v tmp; iter (n-1) tmp;;
+	in iter (n-1) prem;;
 
-
-let routine g =
+(*let routine g =
 	let res = g in iter_vertex (v-> ) res;res;;
 	
-	sommet_a_traiter = liste_v res
-	
+	sommet_a_traiter = liste_v res*)
+
+let relier_pred g lpred noeud = 
+	List.iter (fun v->add_edge g v noeud) lpred;;
+
+let relier_succ g lsucc noeud =
+	List.iter (fun v-> add_edge g noeud v) lsucc;; 
 
 let routine g =
-let resultat = g in
-let l = liste_v resultat in
-let rec iter l  =
-match l with
-|t::q-> iter q
-|[]->
-in iter l
+	let resultat = g in
+	let l = liste_v resultat in
+	List.iter (
+		fun v-> 
+			let su = succ v and pr pred v and na=name v and poid=mass v  in
+			let (premier,dernier) = prim resultat poid na in
+				relier_succ resultat pr dernier;relier_pred resultat su premier
+	) l;
+	resultat;;
+
+
 (*faire cpie de g*)
 
 (*recup nbr res, pred,succ*)
