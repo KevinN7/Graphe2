@@ -34,6 +34,7 @@ let liste_el g =
 
 (* fct liste les predecesseur*)
 
+(*enlever liste_pred*)
 let liste_pred v g =
   fold_pred (fun v l -> v::l ) g v [];;
 

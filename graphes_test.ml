@@ -309,7 +309,37 @@ add_edge dag5 vg5 vl5;;
 dot_output dag5 "dag5.dot";;
 
 
+let test_heuristique = create();;
 
+let va6 = V.create("a",1);;
+let vb6 = V.create("b",1);;
+let vc6 = V.create("c",1);;
+let vd6 = V.create("d",1);;
+let ve6 = V.create("e",1);;
+let vf6 = V.create("f",1);;
+let vg6 = V.create("g",1);;
+let vh6 = V.create("h",1);;
+let vi6 = V.create("i",1);;
+let vj6 = V.create("j",1);;
 
+add_vertex test_heuristique va6;;
+add_vertex test_heuristique vb6;;
+add_vertex test_heuristique vc6;;
+add_vertex test_heuristique vd6;;
+add_vertex test_heuristique ve6;;
+add_vertex test_heuristique vf6;;
+add_vertex test_heuristique vg6;;
+add_vertex test_heuristique vh6;;
+add_vertex test_heuristique vi6;;
+add_vertex test_heuristique vj6;;
 
+add_edge test_heuristique vb6 vc6;;
+add_edge test_heuristique vb6 vd6;;
+add_edge test_heuristique vb6 ve6;;
+add_edge test_heuristique vb6 vf6;;
+add_edge test_heuristique va6 vg6;;
+add_edge test_heuristique vg6 vh6;;
+add_edge test_heuristique vh6 vi6;;
+add_edge test_heuristique vi6 vj6;;
 
+dot_output test_heuristique "test_heuristique.dot";;
