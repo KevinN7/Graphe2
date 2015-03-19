@@ -242,7 +242,6 @@ let routine g =
 (*Appliquer pour chaque noeud prim*)
 (*reconecter les pred et succ sur le resultat de *)
 
-;;
   
 (* entrees: 
    - un nombre entier de ressources
@@ -254,6 +253,27 @@ let routine g =
    - les ressources sont supposees limitees 
    *)
 
-(*val ordonnanceur_graphe_pondere : int -> DAG -> Trace*)
+let ordonnanceur_graphe_pondere resDispo g =
+  let rec iter y z res =
+	match y with
+	|[]-> res
+	|_ -> let yordre = List.sort (fun a b -> let pa=prof_max a and pb=prof_max b in if pa>pb then 1 else if pa<pb then -1 else 0) y in 
+			let (resetage,yfutur,newz) = etage_res_pond yordre z nbres g in iter yfutur newz res@[resetage]
+  in iter (sans_dependance g) [] [];;
+  
+  
+let etage_res_pond y z nbres g=
+	let rec iter ycourant yfutur z resultat nbres = 
+		match ycourant with
+		|t::q -> 
+			let poid = mass t in
+				if(nbres-mass>=0) then
+					let newz=t::z in
+						let newy  = fold_succ (fun v l -> if(inclu (liste_pred v g) newz) then l@[v] else l) g t yfutur
+					in iter q newy newz (resultat@[t]) (nbres-mass)
+				else (resultat,yfutur@ycourant,z)
+		|[] -> (resultat,yfutur,z)
+	in iter y [] z [] nbres;;
+
 
 
