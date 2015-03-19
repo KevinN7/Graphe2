@@ -1,0 +1,4 @@
+ledit ocaml -I /usr/local/godi/lib/ocaml/std-lib/ocamlgraph/ graph.cma
+open Graph.Pack.Graph;;
+#use "mon_magnifique_code.ml";;
+
