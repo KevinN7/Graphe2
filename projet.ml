@@ -146,7 +146,7 @@ let ordonnanceur_ressources_limitees_sans_heuristique nbres g =
   let rec iter y z res =
 	match y with
 	|[]-> res
-	|_ -> let (resetage,yfutur,newz) = etage_res y z nbres g in iter yfutur newz res@[resetage]
+	|_ -> let (resetage,yfutur,newz) = etage_res y z nbres g in iter yfutur newz (res@[resetage])
   in iter (sans_dependance g) [] [];;
 
   
@@ -185,8 +185,9 @@ let ordonnanceur_ressources_limitees_avec_heuristique nbres g =
   let rec iter y z res =
 	match y with
 	|[]-> res
-	|_ -> let yordre = List.sort (fun a b -> let pa=prof_max a and pb=prof_max b in if pa>pb then 1 else if pa<pb then -1 else 0) y in 
-			let (resetage,yfutur,newz) = etage_res yordre z nbres g in iter yfutur newz res@[resetage]
+	|_ -> let yordre = List.sort (fun a b -> let pa=prof_max a g and
+        pb=prof_max b g in if pa>pb then 1 else if pa<pb then -1 else 0) y in 
+			let (resetage,yfutur,newz) = etage_res yordre z nbres g in iter yfutur newz (res@[resetage])
   in iter (sans_dependance g) [] [];;
    
    
@@ -257,7 +258,7 @@ let routine g =
    - le DAG est suppose pondere (section 2.3)
    - les ressources sont supposees limitees 
    *)
-
+(*
 let ordonnanceur_graphe_pondere resDispo g =
   let rec iter y z res =
 	match y with
@@ -280,5 +281,5 @@ let etage_res_pond y z nbres g=
 		|[] -> (resultat,yfutur,z)
 	in iter y [] z [] nbres;;
 
-
+*)
 
