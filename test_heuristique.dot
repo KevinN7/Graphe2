@@ -1,0 +1,23 @@
+digraph G {
+  a [label="a:1"];
+  b [label="b:1"];
+  c [label="c:1"];
+  d [label="d:1"];
+  e [label="e:1"];
+  f [label="f:1"];
+  g [label="g:1"];
+  h [label="h:1"];
+  i [label="i:1"];
+  j [label="j:1"];
+  
+  
+  a -> g;
+  b -> c;
+  b -> d;
+  b -> e;
+  b -> f;
+  g -> h;
+  h -> i;
+  i -> j;
+  
+  }
