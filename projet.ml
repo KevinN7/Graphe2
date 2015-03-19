@@ -200,20 +200,38 @@ let ordonnanceur_ressources_limitees_avec_heuristique nbres g =
 		iter yfutur_sort newz res@[resetage]
   in iter (sans_dependance g) [] [];;*)
 
-  let aux g =
-	let a=V.create("",1) in 
-	begin 
-	add_vertex g a;;
-	a
-	end;;
-
+let aux nom g =
+	let a=V.create(nom,1) in add_vertex g a;a;;
+	
 let prim g n =
-let a =V.create("",1);
-add_vertex
-	let rec iter n
-();;
+let prem = aux ^"" g in
+	let rec iter n v
+	match n with
+	|0-> (prem,v)
+	|_-> let tmp = aux (^(string_of_int n)) g in add_edge g v tmp; iter (n-1) tmp;;
+	in iter n prem;;
+
 
 let routine g =
+	let res = g in iter_vertex (v-> ) res;res;;
+	
+	sommet_a_traiter = liste_v res
+	
+
+let routine g =
+let resultat = g in
+let l = liste_v resultat in
+let rec iter l  =
+match l with
+|t::q-> iter q
+|[]->
+in iter l
+(*faire cpie de g*)
+
+(*recup nbr res, pred,succ*)
+(*Appliquer pour chaque noeud prim*)
+(*reconecter les pred et succ sur le resultat de *)
+
 ;;
   
 (* entrees: 
