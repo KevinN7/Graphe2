@@ -2,8 +2,8 @@
 *)
 
 (* fonction qui liste les sommets *)
-(* liste_v: Digraph.t -> int list *)
-let liste_v g = (fold_vertex (fun v qt -> (V.label v)::qt) 
+(* liste_v: Digraph.t -> Vertex list *)
+let liste_v g = (fold_vertex (fun v qt -> v::qt) 
                                g
                                [])
 ;;
@@ -206,11 +206,13 @@ let aux nom g =
 	
 (*ajoute une chaine de noeud relier entre eux de n noeuds et renvoit le premier et le dernier*)
 let prim g n nom =
-	let prem = aux ^string_of_int n g in
-	let rec iter n v
+	let prem = aux (nom^(string_of_int n)) g in
+	let rec iter n v =
 	match n with
 	|0-> (prem,v)
-	|_-> let tmp = aux (nom^(string_of_int n)) g in add_edge g v tmp; iter (n-1) tmp;;
+	|_-> let tmp = aux (nom^(string_of_int n)) g in 
+                add_edge g v tmp;
+                iter (n-1) tmp
 	in iter (n-1) prem;;
 
 (*let routine g =
@@ -229,9 +231,12 @@ let routine g =
 	let l = liste_v resultat in
 	List.iter (
 		fun v-> 
-			let su = succ v and pr pred v and na=name v and poid=mass v  in
+			let su = succ g v and pr=pred g v and
+                        na=DAG.Display.vertex_name v and
+                        poid=Vertex.mass(V.label v) in
 			let (premier,dernier) = prim resultat poid na in
-				relier_succ resultat pr dernier;relier_pred resultat su premier
+				relier_succ resultat pr dernier;
+                                relier_pred resultat su premier
 	) l;
 	resultat;;
 
