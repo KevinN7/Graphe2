@@ -200,8 +200,22 @@ let ordonnanceur_ressources_limitees_avec_heuristique nbres g =
 		iter yfutur_sort newz res@[resetage]
   in iter (sans_dependance g) [] [];;*)
 
+  let aux g =
+	let a=V.create("",1) in 
+	begin 
+	add_vertex g a;;
+	a
+	end;;
 
+let prim g n =
+let a =V.create("",1);
+add_vertex
+	let rec iter n
+();;
 
+let routine g =
+;;
+  
 (* entrees: 
    - un nombre entier de ressources
    - un DAG
