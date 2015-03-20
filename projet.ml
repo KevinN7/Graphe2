@@ -153,7 +153,7 @@ let aux nom g =
 	let a=V.create(nom,1) in add_vertex g a;a;;
 	
 (*ajoute une chaine de noeud relier entre eux de n noeuds et renvoit le premier et le dernier*)
-let prim g n nom =
+(*let prim g n nom =
 	let prem = aux (nom^(string_of_int n)) g in
 	let rec iter n v =
 	match n with
@@ -161,21 +161,20 @@ let prim g n nom =
 	|_-> let tmp = aux (nom^(string_of_int n)) g in 
                 add_edge g v tmp;
                 iter (n-1) tmp
-	in iter (n-1) prem;;
+	in iter (n-1) prem;;*)
 
 
-let relier_pred g lpred noeud = 
+(*let relier_pred g lpred noeud = 
 	List.iter (fun v->add_edge g v noeud) lpred;;
 
 let relier_succ g lsucc noeud =
-	List.iter (fun v-> add_edge g noeud v) lsucc;; 
+	List.iter (fun v-> add_edge g noeud v) lsucc;; *)
 
 
 let liste_edge g =
   fold_edges (fun u v l -> (u,v)::l) g [];; 
 
 let aux_routine g pred succ =
-  (*let nom=DAG.Display.vertex_name pred in*)
   let nom= fst(V.label pred) in
   let rec iter n =
     match n with
@@ -191,14 +190,9 @@ let aux_routine g pred succ =
 let routine g =
 	let resultat = copy g in
 	let l = liste_edge resultat in
-	List.iter (
-	        fun (u,v)->
-                  begin
-                  remove_edge g u v;
-                  aux_routine g u v
-                  end
-	) l;
-	resultat;;
+                List.iter (fun (u,v)->remove_edge resultat u v) l;
+                List.iter(fun (u,v)->aux_routine resultat u v) l;
+	        resultat;;
 
 
 (* entrees: 
