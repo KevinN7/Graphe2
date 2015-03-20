@@ -233,7 +233,8 @@ let ordonnanceur_graphe_pondere resDispo g =
   let rec iter y z res =
 	match y with
 	|[]-> res
-	|_ -> let yordre = List.sort (fun a b -> let pa=prof_max a and pb=prof_max b in if pa>pb then 1 else if pa<pb then -1 else 0) y in 
-			let (resetage,yfutur,newz) = etage_res_pond yordre z resDispo g in iter yfutur newz res@[resetage]
+	|_ -> let yordre = List.sort (fun a b -> let pa=prof_max a and
+        pb=prof_max b in if pa>pb then -1 else if pa<pb then 1 else 0) y in 
+		let (resetage,yfutur,newz) = etage_res_pond yordre z resDispo g in iter yfutur newz res@[resetage]
   in iter (sans_dependance g) [] [];;
 
