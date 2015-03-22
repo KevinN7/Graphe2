@@ -220,7 +220,7 @@ let etage_res_pond y z nbres g=
 				else if(nbres>0) then
                                 begin
                                         Mark.set t (poid-nbres);
-					(resultat,yfutur@ycourant,z)
+										(resultat,yfutur@ycourant,z)
                                 end
                                 else (resultat,yfutur@ycourant,z)
 		|[] -> (resultat,yfutur,z)
@@ -233,8 +233,8 @@ let ordonnanceur_graphe_pondere resDispo g =
   let rec iter y z res =
 	match y with
 	|[]-> res
-	|_ -> let yordre = List.sort (fun a b -> let pa=prof_max a and
-        pb=prof_max b in if pa>pb then -1 else if pa<pb then 1 else 0) y in 
+	|_ -> let yordre = List.sort (fun a b -> let pa=prof_max a g and
+        pb=prof_max b g in if pa>pb then -1 else if pa<pb then 1 else 0) y in 
 		let (resetage,yfutur,newz) = etage_res_pond yordre z resDispo g in iter yfutur newz res@[resetage]
   in iter (sans_dependance g) [] [];;
 
